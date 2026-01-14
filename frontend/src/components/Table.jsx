@@ -12,7 +12,7 @@ function Table() {
   const [users, setUsers] = useState([]);
   const hasFetchedUsers = useRef(false);
 
-  //async await useEffect function for fetching data from server
+  //async await useEffect function for fetching data from server hello
   useEffect(() => {
 
     if (!import.meta.env.VITE_API_URL) {
@@ -35,7 +35,7 @@ function Table() {
       } catch (error) {
         console.log("There was an error fetching the users!", error);
 
-        //if we haven't fetched it stay as it is
+        //if we haven't fetched it stay as it is test
         if (!hasFetchedUsers.current) {
           toast.error("Error Fetching Data");
           hasFetchedUsers.current = true; // set the ref to true after first fetch attempt
