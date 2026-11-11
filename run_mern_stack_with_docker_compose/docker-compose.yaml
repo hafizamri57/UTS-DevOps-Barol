@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # MySQL Database Service
   # This service runs a MySQL database server
@@ -11,10 +9,10 @@ services:
     container_name: mysql_container
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword               # Root user's password (change for production)
-      MYSQL_DATABASE: crud_operations                     # Database name
-      MYSQL_USER: myuser                           # Regular user
-      MYSQL_PASSWORD: mypassword                    # Password for `MYSQL_USER`
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}               # Root user's password (change for production)
+      MYSQL_DATABASE: ${MYSQL_DATABASE}                     # Database name
+      MYSQL_USER: ${MYSQL_USER}                           # Regular user
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}                    # Password for `MYSQL_USER`
     ports:
       - "3306:3306"                                   # Expose MySQL on port 3306
     volumes:
@@ -39,7 +37,7 @@ services:
     environment:
       PMA_HOST: mysql                                   # Hostname of the MySQL server (matches the `mysql` service)
       PMA_USER: root                                    # MySQL root user for phpMyAdmin
-      PMA_PASSWORD: rootpassword                       # Password for the MySQL root user
+      PMA_PASSWORD: ${MYSQL_ROOT_PASSWORD}                       # Password for the MySQL root user
     ports:
       - "8085:80"                                       # Expose phpMyAdmin on port 8080
     depends_on:
@@ -57,12 +55,10 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - DB_HOST=mysql # Change to your MySQL host
-      - DB_USER=myuser
-      - DB_PASSWORD=mypassword
-      - DB_DATABASE=crud_operations
-    volumes:
-      - ./server:/usr/src/app
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DATABASE: ${DB_DATABASE}
     depends_on:
       mysql:
         condition: service_healthy # Wait for MySQL to be healthy before starting the backend
@@ -79,7 +75,7 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - VITE_API_URL=http://<Your Machine IP>:3000 # Change to your backend API URL Like http://192.168.81.207:3000
+      VITE_API_URL: ${VITE_API_URL}
     depends_on:
       - backend
     networks:
